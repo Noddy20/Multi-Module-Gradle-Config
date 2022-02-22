@@ -1,0 +1,100 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+// Apply common.gradle file to use it's variables in this gradle
+apply from: "$project.rootDir/config.gradle"
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.arupakaman.multimodulegradleconfig"
+        minSdk 21
+        targetSdk 31
+
+        // Example of using variables from common.gradle file
+        versionCode conf.versionCodeFromConfig
+        versionName conf.versionNameFromConfig
+
+        // Below statements print the variables from common.gradle file (for testing only)
+        println "app_gradle : versionCodeFromConfig = $conf.versionCodeFromConfig"
+        println "app_gradle : versionNameFromConfig = $conf.versionNameFromConfig"
+
+        println ""
+        // Example of using variables from project level gradle (uncomment this and comment the above examples to test)
+        //versionCode versionCodeFromProjectGradle
+        //versionName versionNameFromProjectGradle
+
+        // Below statements print the variables from project level gradle (for testing only)
+        println "app_gradle : versionCodeFromProjectGradle = $versionCodeFromProjectGradle"
+        println "app_gradle : versionNameFromProjectGradle = $versionNameFromProjectGradle"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "env"
+    productFlavors {
+        alpha {
+            //From config.gradle
+            buildConfigField 'String', 'WEB_BASE_URL_APP_MODULE', '\"' + conf.webBaseStagingUrlFromConfig + '\"'
+            // Or From project level gradle (use one of them config.gradle or project level gradle)
+            //buildConfigField 'String', 'WEB_BASE_URL_APP_MODULE', '\"' + webBaseUrlFromProjectGradle + '\"'
+
+
+            dimension "env"
+        }
+        production {
+            //From config.gradle
+            buildConfigField 'String', 'WEB_BASE_URL_APP_MODULE', '\"' + conf.webBaseUrlFromConfig + '\"'
+            // Or From project level gradle (use one of them config.gradle or project level gradle)
+            //buildConfigField 'String', 'WEB_BASE_URL_APP_MODULE', '\"' + webBaseUrlFromProjectGradle + '\"'
+
+
+            dimension "env"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    //Added basemodule in app module as dependency
+    implementation project(':basemodule')
+
+    // Example of using variables from common.gradle file
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlinFromConfig"
+
+    // Below statements print the variables from common.gradle file (for testing only)
+    println "app_gradle : kotlinFromConfig = $versions.kotlinFromConfig"
+
+    // Example of using variables from project level gradle (uncomment this and comment the above examples to test)
+    //implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinFromProjectGradle"
+
+    // Below statements print the variables from project level gradle (for testing only)
+    println "app_gradle : kotlinFromProjectGradle = $kotlinFromProjectGradle"
+
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}

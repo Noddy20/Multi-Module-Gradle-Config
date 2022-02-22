@@ -1,0 +1,24 @@
+/**
+ *
+ *   To store gradle variables.
+ *   Apply this file as plugin in a modules gradle file to access it's variables
+ *
+ */
+
+ext.conf = [
+
+        webBaseUrlFromConfig  :  'https://example.com',
+        webBaseStagingUrlFromConfig  :  'https://staging.example.com',
+        versionCodeFromConfig             : 1,
+        versionNameFromConfig             : '1.0.0',
+]
+
+ext.versions = [
+
+        // Gradle Plugins
+        gradleBuildToolFromConfig         : '7.0.4',
+
+        // Kotlin
+        kotlinFromConfig                  : '1.6.10',
+
+]

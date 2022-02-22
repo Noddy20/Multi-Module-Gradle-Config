@@ -1,0 +1,63 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+
+    /**
+     *   You can declare your variables here (in project level gradle), that you want to use in
+     *   in any module level gradle (for example in this project app and basemodule)
+     *
+     *   Declare your constant/shared variables here in project level gradle or in the config.gradle (Use one of them)
+     */
+    ext{
+        webBaseUrlFromProjectGradle = 'https://example.com'
+        webBaseUrlStagingFromProjectGradle = 'https://staging.example.com'
+        versionCodeFromProjectGradle = 1
+        versionNameFromProjectGradle = '1.0.0'
+
+        gradleBuildToolFromProjectGradle = '7.0.4'
+        kotlinFromProjectGradle = '1.6.10'
+
+    }
+
+    // Apply common.gradle file to use it's variables in this gradle
+    apply from: "$project.rootDir/config.gradle"
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+
+        // Example of using variables from common.gradle file
+        classpath "com.android.tools.build:gradle:$versions.gradleBuildToolFromConfig"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlinFromConfig"
+
+        // Example of using variables from project level gradle (uncomment this and comment the above examples to test)
+        //classpath "com.android.tools.build:gradle:$gradleBuildToolFromProjectGradle"
+        //classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinFromProjectGradle"
+
+
+
+        // Below statements print the variables from common.gradle file (for testing only)
+        println "project_gradle : gradleBuildToolFromConfig = $versions.gradleBuildToolFromConfig"
+        println "project_gradle : kotlinFromConfig = $versions.kotlinFromConfig"
+        println "project_gradle : webBaseUrlFromConfig = $conf.webBaseUrlFromConfig"
+        println "project_gradle : versionCodeFromConfig = $conf.versionCodeFromConfig"
+        println "project_gradle : versionNameFromConfig = $conf.versionNameFromConfig"
+
+        println ""
+
+        // Below statements print the variables from project level gradle (for testing only)
+        println "project_gradle : gradleBuildToolFromProjectGradle = $gradleBuildToolFromProjectGradle"
+        println "project_gradle : kotlinFromProjectGradle = $kotlinFromProjectGradle"
+        println "project_gradle : webBaseUrlFromProjectGradle = $webBaseUrlFromProjectGradle"
+        println "project_gradle : versionCodeFromProjectGradle = $versionCodeFromProjectGradle"
+        println "project_gradle : versionNameFromProjectGradle = $versionNameFromProjectGradle"
+
+    }
+
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
